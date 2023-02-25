@@ -3,7 +3,6 @@ import 'styles/chrome-bug.css';
 import { useEffect, useState } from 'react';
 import React from 'react';
 
-import Layout from 'components/Layout';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { AppProps } from 'next/app';
@@ -19,14 +18,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <div className="bg-black">
-      <SessionContextProvider supabaseClient={supabaseClient}>
-        <MyUserContextProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </MyUserContextProvider>
-      </SessionContextProvider>
-    </div>
+    <SessionContextProvider supabaseClient={supabaseClient}>
+      <MyUserContextProvider>
+        <Component {...pageProps} />
+      </MyUserContextProvider>
+    </SessionContextProvider>
   );
 }
