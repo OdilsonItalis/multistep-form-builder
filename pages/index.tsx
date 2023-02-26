@@ -1,58 +1,147 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Formik } from 'formik';
+
+import Button from '../components/Button';
+import FormLabel from '../components/FormLabel';
+import FormInput from '../components/FormInput';
 
 export default function CreateNewFormPage() {
-  const [formName, setFormName] = useState('');
-  const [redirectUrl, setRedirectUrl] = useState('');
-  const [buttonText, setButtonText] = useState('');
+  const colors = {
+    purple: '#cc66ff',
+    black: '#000000',
+    pink: '#ff66ff',
+    green: '#009933'
+  };
   return (
     <div className="w-screen h-screen flex items-center justify-center">
-      <form>
-        <button type="submit">create new form</button>
+      <Formik
+        initialValues={{
+          formName: '',
+          redirectUrl: '',
+          buttonText: '',
+          buttonTheme: ''
+        }}
+        onSubmit={(values) => {
+          console.log('------------------>>>', values);
+        }}
+      >
+        {({
+          values,
+          handleChange,
+          setFieldValue,
+          errors,
+          touched,
+          isSubmitting,
+          handleSubmit
+        }) => (
+          <form className="flex flex-col w-[350px]" onSubmit={handleSubmit}>
+            <Button type="submit" classes="self-end" disabled={isSubmitting}>
+              Create new form
+            </Button>
 
-        <label>Form Name</label>
-        <input
-          type="text"
-          placeholder="Enter your form name"
-          value={formName}
-          onChange={(e) => setFormName(e.target.value)}
-        />
+            <FormLabel>Form Name</FormLabel>
+            <FormInput
+              type="text"
+              name="formName"
+              placeholder="Enter your form name"
+              value={values.formName}
+              onChange={handleChange}
+            />
+            {errors.formName && (
+              <span>{errors.formName}</span>
+            )}
 
-        <label>Button Theme</label>
-        <div>
-          <div>
-            <label>Purple</label>
-            <button>Next</button>
-          </div>
-          <div>
-            <label>Black</label>
-            <button>Next</button>
-          </div>
-          <div>
-            <label>Pink</label>
-            <button>Next</button>
-          </div>
-          <div>
-            <label>Green</label>
-            <button>Next</button>
-          </div>
-        </div>
-        
-        <label>Redirect url after user submits the form</label>
-        <input
-          type="text"
-          placeholder="Form submit url"
-          value={redirectUrl}
-          onChange={(e) => setRedirectUrl(e.target.value)}
-        />
-        
-        <label>Form Submit button text</label>
-        <input
-          type="text"
-          placeholder="Form submit button text"
-          value={buttonText}
-          onChange={(e) => setButtonText(e.target.value)}
-        />
-      </form>
+            <FormLabel>Button Theme</FormLabel>
+            <div className="flex flex-wrap justify-between">
+              <div className="flex flex-col w-[48%]">
+                <p className="pl-1">Purple</p>
+                <Button
+                  classes="self-end w-full"
+                  themeColor={colors.purple}
+                  radioChecked={values.buttonTheme === colors.purple}
+                  onClickHandler={() =>
+                    setFieldValue('buttonTheme', colors.purple)
+                  }
+                  radioCicle
+                  leftArrow
+                >
+                  Next
+                </Button>
+              </div>
+              <div className="flex flex-col w-[48%]">
+                <p className="pl-1">Black</p>
+                <Button
+                  classes="self-end w-full"
+                  themeColor={colors.black}
+                  radioChecked={values.buttonTheme === colors.black}
+                  onClickHandler={() =>
+                    setFieldValue('buttonTheme', colors.black)
+                  }
+                  radioCicle
+                  leftArrow
+                >
+                  Next
+                </Button>
+              </div>
+              <div className="flex flex-col w-[48%]">
+                <p className="pl-1">Pink</p>
+                <Button
+                  classes="self-end w-full"
+                  themeColor={colors.pink}
+                  radioChecked={values.buttonTheme === colors.pink}
+                  onClickHandler={() =>
+                    setFieldValue('buttonTheme', colors.pink)
+                  }
+                  radioCicle
+                  leftArrow
+                >
+                  Next
+                </Button>
+              </div>
+              <div className="flex flex-col w-[48%]">
+                <p className="pl-1">Green</p>
+                <Button
+                  classes="self-end w-full"
+                  themeColor={colors.green}
+                  radioChecked={values.buttonTheme === colors.green}
+                  onClickHandler={() =>
+                    setFieldValue('buttonTheme', colors.green)
+                  }
+                  radioCicle
+                  leftArrow
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+            {errors.buttonTheme && <span>{errors.buttonTheme}</span>}
+
+            <FormLabel>Redirect url after user submits the form</FormLabel>
+            <FormInput
+              type="text"
+              name="redirectUrl"
+              placeholder="Form submit url"
+              value={values.redirectUrl}
+              onChange={handleChange}
+            />
+            {errors.redirectUrl && touched.redirectUrl && (
+              <span>{errors.redirectUrl}</span>
+            )}
+
+            <FormLabel>Form Submit button text</FormLabel>
+            <FormInput
+              type="text"
+              name="buttonText"
+              placeholder="Form submit button text"
+              value={values.buttonText}
+              onChange={handleChange}
+            />
+            {errors.buttonText && touched.buttonText && (
+              <span>{errors.buttonText}</span>
+            )}
+          </form>
+        )}
+      </Formik>
     </div>
   );
 }
