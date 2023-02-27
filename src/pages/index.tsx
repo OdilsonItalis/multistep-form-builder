@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
+import Router from 'next/router';
 
 import Button from '../components/Button';
 import FormLabel from '../components/FormLabel';
@@ -25,7 +26,9 @@ export default function CreateNewFormPage() {
         }}
         validationSchema={createNewFormSchema}
         onSubmit={(values) => {
-          console.log('------------------>>>', values);
+          Router.push({
+            pathname: `/forms/${values.formName}`
+          });
         }}
       >
         {({
@@ -48,10 +51,10 @@ export default function CreateNewFormPage() {
               name="formName"
               placeholder="Enter your form name"
               value={values.formName}
-              error={!!errors.formName}
+              error={errors.formName && touched.formName}
               onChange={handleChange}
             />
-            {errors.formName && (
+            {errors.formName && touched.formName && (
               <span className="text-red-500 font-medium text-[14px]">
                 {errors.formName}
               </span>
@@ -132,10 +135,10 @@ export default function CreateNewFormPage() {
               name="redirectUrl"
               placeholder="Form submit url"
               value={values.redirectUrl}
-              error={!!errors.redirectUrl}
+              error={errors.redirectUrl && touched.buttonTheme}
               onChange={handleChange}
             />
-            {errors.redirectUrl && touched.redirectUrl && (
+            {errors.redirectUrl && touched.buttonTheme && (
               <span className="text-red-500 font-medium text-[14px]">
                 {errors.redirectUrl}
               </span>
@@ -147,7 +150,7 @@ export default function CreateNewFormPage() {
               name="buttonText"
               placeholder="Form submit button text"
               value={values.buttonText}
-              error={!!errors.buttonText}
+              error={errors.buttonText && touched.buttonText}
               onChange={handleChange}
             />
             {errors.buttonText && touched.buttonText && (

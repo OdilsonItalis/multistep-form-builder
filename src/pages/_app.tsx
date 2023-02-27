@@ -3,6 +3,9 @@ import '../styles/chrome-bug.css';
 import { useEffect, useState } from 'react';
 import React from 'react';
 
+import store from '../store/store';
+import { Provider } from 'react-redux';
+
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { AppProps } from 'next/app';
@@ -17,11 +20,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     document.body.classList?.remove('loading');
   }, []);
 
+
   return (
-    <SessionContextProvider supabaseClient={supabaseClient}>
-      <MyUserContextProvider>
-        <Component {...pageProps} />
-      </MyUserContextProvider>
-    </SessionContextProvider>
+    <Provider store={store}>
+      <SessionContextProvider supabaseClient={supabaseClient}>
+        <MyUserContextProvider>
+          <Component {...pageProps} />
+        </MyUserContextProvider>
+      </SessionContextProvider>
+    </Provider>
   );
 }

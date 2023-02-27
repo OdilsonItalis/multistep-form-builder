@@ -8,7 +8,7 @@ interface InputProps {
   placeholder?: string;
   className?: string;
   id?: string; 
-  error?: boolean;
+  error?: boolean | "";
 }
 
 export default function FormInput({
