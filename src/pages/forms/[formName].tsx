@@ -6,13 +6,10 @@ import { FaPlus } from 'react-icons/fa';
 import NewFormControlsNav from '../../components/NewFormControlsNav';
 import Button from '../../components/FormMaterials/Button';
 
-import { RootState } from '../../store/store';
 import { FormModel } from '../../models/form';
 
 export default function CustomForm() {
-  const { selectedForm } = useSelector(
-    (state: RootState) => state.formsReducer
-  );
+  const { selectedForm } = useSelector((state) => state.formsReducer);
 
   const [formSteps, setFormSteps] = useState<number>(1);
   const [selectedStep, setSelectedStep] = useState<number>(1);
@@ -47,7 +44,9 @@ export default function CustomForm() {
           <p className="text-[14px] font-medium mb-4">Preview</p>
           <div className="w-[400px] rounded-sm border border-gray-300 border-solid">
             <form className="p-2 flex flex-col w-full h-full items-center">
-              <h4 className='font-medium text-[18px] text-gray-600 my-3'>{selectedForm.formName}</h4>
+              <h4 className="font-medium text-[18px] text-gray-600 my-3">
+                {selectedForm.formName}
+              </h4>
               <Button
                 classes="self-end w-full mt-auto"
                 themeColor={selectedForm.buttonTheme}

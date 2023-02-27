@@ -4,16 +4,14 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 import { ToastProvider } from 'react-toast-notifications';
 
-import store from '../store/store';
-import { Provider } from 'react-redux';
-
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { AppProps } from 'next/app';
 import { MyUserContextProvider } from '../utils/useUser';
 import type { Database } from 'types_db';
+import { reduxWrapper } from '../store';
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   const [supabaseClient] = useState(() =>
     createBrowserSupabaseClient<Database>()
   );
@@ -22,7 +20,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <Provider store={store}>
       <SessionContextProvider supabaseClient={supabaseClient}>
         <MyUserContextProvider>
           <ToastProvider>
@@ -30,6 +27,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           </ToastProvider>
         </MyUserContextProvider>
       </SessionContextProvider>
-    </Provider>
   );
 }
+
+export default reduxWrapper.withRedux(MyApp);

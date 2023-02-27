@@ -9,7 +9,7 @@ import FormInput from '../components/FormMaterials/FormInput';
 
 import { createNewFormSchema } from '../utils/formValidationSchemas';
 import useToastMessage from '../hooks/toastMessage';
-import { createNewForm } from '../store/formsReducer/actions';
+import { createNewForm } from '../store/slices/formsSlice';
 
 export default function CreateNewFormPage() {
   const { showSuccess } = useToastMessage();

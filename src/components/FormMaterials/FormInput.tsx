@@ -1,15 +1,6 @@
 import React from 'react';
 
-interface InputProps {
-  value: string;
-  name?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: string;
-  placeholder?: string;
-  className?: string;
-  id?: string; 
-  error?: boolean | "";
-}
+import { InputProps } from '../../models/componentsMaterialModels';
 
 export default function FormInput({
   value,
@@ -30,7 +21,9 @@ export default function FormInput({
       type={type || 'text'}
       placeholder={placeholder}
       onChange={onChange}
-      className={`border border-solid border-inherit rounded-md py-1 px-2 focus:outline-0 ${className} ${error && 'border-red-500'}`}
+      className={`border border-solid border-inherit rounded-md py-1 px-2 focus:outline-0 ${className} ${
+        error && 'border-red-500'
+      }`}
       {...props}
     />
   );

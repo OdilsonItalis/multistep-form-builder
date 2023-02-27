@@ -1,17 +1,7 @@
 import React, { ReactElement } from 'react';
 import { FaChevronRight, FaRegCircle, FaCheckCircle } from 'react-icons/fa';
 
-interface ButtonProps {
-  themeColor?: string;
-  onClickHandler?: () => void;
-  type?: 'button' | 'submit' | 'reset';
-  classes?: string;
-  children: ReactElement | string;
-  leftArrow?: boolean;
-  radioCicle?: boolean;
-  radioChecked?: boolean;
-  disabled?: boolean;
-}
+import { ButtonProps } from '../../models/componentsMaterialModels';
 
 export default function Button({
   themeColor,
