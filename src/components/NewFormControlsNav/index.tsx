@@ -1,17 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { FaCheckCircle, FaPlus } from 'react-icons/fa';
 
-export default function NewFormControlsNav() {
+export default function NewFormControlsNav({ formData, setFormData }) {
   const themeBackgrounds = [
     { name: 'Default', url: '' },
     {
       name: 'Skype Blue',
-      url: '/images/formThemeBackgrounds/skype_blue_gradient.png'
+      url: '/images/formThemeBackgrounds/skype_blue_gradient.png',
+      textColor: '#ffffff'
     },
-    { name: 'Red 123', url: '/images/formThemeBackgrounds/red_123.png' }
+    {
+      name: 'Red 123',
+      url: '/images/formThemeBackgrounds/red_123.png',
+      textColor: '#ffffff'
+    }
   ];
   const [selectedTheme, setSelectedTheme] = useState<number>(0);
+
+  useEffect(() => {
+    if (selectedTheme !== 0) {
+      setFormData({
+        ...formData,
+        background: themeBackgrounds[selectedTheme].url,
+        textColor: themeBackgrounds[selectedTheme].textColor
+      });
+    } else {
+      setFormData({ ...formData, background: null, textColor: null });
+    }
+  }, [selectedTheme]);
   return (
     <div>
       <p className="text-[16px] font-medium mb-4">Background Theme</p>

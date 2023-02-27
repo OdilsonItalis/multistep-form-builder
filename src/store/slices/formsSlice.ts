@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { FormModel } from '../../models/form';
 
-const initialState: { totalForms: FormModel[]; selectedForm: FormModel | unknown } = {
+const initialState = {
   totalForms: [],
   selectedForm: {}
 };
