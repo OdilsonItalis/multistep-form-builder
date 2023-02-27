@@ -8,6 +8,7 @@ interface InputProps {
   placeholder?: string;
   className?: string;
   id?: string; 
+  error?: boolean;
 }
 
 export default function FormInput({
@@ -18,6 +19,7 @@ export default function FormInput({
   placeholder,
   className,
   id,
+  error,
   ...props
 }: InputProps) {
   return (
@@ -28,7 +30,7 @@ export default function FormInput({
       type={type || 'text'}
       placeholder={placeholder}
       onChange={onChange}
-      className={`border border-solid border-inherit rounded-md py-1 px-2 focus:outline-0 ${className}`}
+      className={`border border-solid border-inherit rounded-md py-1 px-2 focus:outline-0 ${className} ${error && 'border-red-500'}`}
       {...props}
     />
   );

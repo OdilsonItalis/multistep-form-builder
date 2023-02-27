@@ -5,6 +5,8 @@ import Button from '../components/Button';
 import FormLabel from '../components/FormLabel';
 import FormInput from '../components/FormInput';
 
+import { createNewFormSchema } from '../utils/formValidationSchemas';
+
 export default function CreateNewFormPage() {
   const colors = {
     purple: '#cc66ff',
@@ -21,6 +23,7 @@ export default function CreateNewFormPage() {
           buttonText: '',
           buttonTheme: ''
         }}
+        validationSchema={createNewFormSchema}
         onSubmit={(values) => {
           console.log('------------------>>>', values);
         }}
@@ -45,10 +48,13 @@ export default function CreateNewFormPage() {
               name="formName"
               placeholder="Enter your form name"
               value={values.formName}
+              error={!!errors.formName}
               onChange={handleChange}
             />
             {errors.formName && (
-              <span>{errors.formName}</span>
+              <span className="text-red-500 font-medium text-[14px]">
+                {errors.formName}
+              </span>
             )}
 
             <FormLabel>Button Theme</FormLabel>
@@ -114,7 +120,11 @@ export default function CreateNewFormPage() {
                 </Button>
               </div>
             </div>
-            {errors.buttonTheme && <span>{errors.buttonTheme}</span>}
+            {errors.buttonTheme && (
+              <span className="text-red-500 font-medium text-[14px]">
+                {errors.buttonTheme}
+              </span>
+            )}
 
             <FormLabel>Redirect url after user submits the form</FormLabel>
             <FormInput
@@ -122,10 +132,13 @@ export default function CreateNewFormPage() {
               name="redirectUrl"
               placeholder="Form submit url"
               value={values.redirectUrl}
+              error={!!errors.redirectUrl}
               onChange={handleChange}
             />
             {errors.redirectUrl && touched.redirectUrl && (
-              <span>{errors.redirectUrl}</span>
+              <span className="text-red-500 font-medium text-[14px]">
+                {errors.redirectUrl}
+              </span>
             )}
 
             <FormLabel>Form Submit button text</FormLabel>
@@ -134,10 +147,13 @@ export default function CreateNewFormPage() {
               name="buttonText"
               placeholder="Form submit button text"
               value={values.buttonText}
+              error={!!errors.buttonText}
               onChange={handleChange}
             />
             {errors.buttonText && touched.buttonText && (
-              <span>{errors.buttonText}</span>
+              <span className="text-red-500 font-medium text-[14px]">
+                {errors.buttonText}
+              </span>
             )}
           </form>
         )}
