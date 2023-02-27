@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import Router from 'next/router';
+import { useDispatch } from 'react-redux';
 
 import Button from '../components/FormMaterials/Button';
 import FormLabel from '../components/FormMaterials/FormLabel';
@@ -8,9 +9,12 @@ import FormInput from '../components/FormMaterials/FormInput';
 
 import { createNewFormSchema } from '../utils/formValidationSchemas';
 import useToastMessage from '../hooks/toastMessage';
+import { createNewForm } from '../store/formsReducer/actions';
 
 export default function CreateNewFormPage() {
   const { showSuccess } = useToastMessage();
+  const dispatch = useDispatch();
+
   const colors = {
     purple: '#cc66ff',
     black: '#000000',
@@ -29,6 +33,7 @@ export default function CreateNewFormPage() {
         validationSchema={createNewFormSchema}
         onSubmit={(values) => {
           showSuccess(`New form ${values.formName} created successfully!`);
+          dispatch(createNewForm(values));
           Router.push({
             pathname: `/forms/${values.formName}`
           });

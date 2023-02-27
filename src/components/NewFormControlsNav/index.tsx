@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import { FaCheckCircle } from 'react-icons/fa';
+import { FaCheckCircle, FaPlus } from 'react-icons/fa';
 
 export default function NewFormControlsNav() {
   const themeBackgrounds = [
@@ -22,10 +22,12 @@ export default function NewFormControlsNav() {
               className={classNames(
                 'w-[50px] h-[100px] rounded-[6px] bg-white overflow-hidden flex justify-center items-center relative cursor-pointer',
                 {
-                  'border-gray-500 border': index !== selectedTheme && index === 0
+                  'border-gray-500 border':
+                    index !== selectedTheme && index === 0
                 },
                 {
-                  'border-violet-600 border-2': index === selectedTheme && index === 0
+                  'border-violet-600 border-2':
+                    index === selectedTheme && index === 0
                 }
               )}
               onClick={() => setSelectedTheme(index)}
@@ -48,6 +50,11 @@ export default function NewFormControlsNav() {
           </div>
         ))}
       </div>
+      <p className="text-[16px] font-medium mb-4 mt-4">Components</p>
+      <button className="ml-4 flex items-center text-blue-500 font-medium">
+        <FaPlus className="mr-1" />
+        Add new Component
+      </button>
     </div>
   );
 }
