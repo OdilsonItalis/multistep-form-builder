@@ -2,9 +2,9 @@ import React from 'react';
 import { Formik } from 'formik';
 import Router from 'next/router';
 
-import Button from '../components/Button';
-import FormLabel from '../components/FormLabel';
-import FormInput from '../components/FormInput';
+import Button from '../components/FormMaterials/Button';
+import FormLabel from '../components/FormMaterials/FormLabel';
+import FormInput from '../components/FormMaterials/FormInput';
 
 import { createNewFormSchema } from '../utils/formValidationSchemas';
 import useToastMessage from '../hooks/toastMessage';
