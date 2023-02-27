@@ -17,7 +17,15 @@ export default function CustomForm() {
 
   useEffect(() => {
     if (selectedForm.formName) {
-      setFormData(selectedForm);
+      setFormData({
+        ...selectedForm,
+        steps: Array.from(Array(formSteps).keys()).map((item) => {
+          return {
+            step: item,
+            materials: []
+          };
+        })
+      });
     } else {
       Router.push({
         pathname: '/'
@@ -45,7 +53,9 @@ export default function CustomForm() {
             ))}
             <button
               className="ml-4 flex items-center text-blue-500 font-medium"
-              onClick={() => setFormSteps(formSteps + 1)}
+              onClick={() => {
+                setFormSteps(formSteps + 1);
+              }}
             >
               <FaPlus className="mr-1" />
               Add new step
