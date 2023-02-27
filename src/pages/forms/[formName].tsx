@@ -37,7 +37,7 @@ export default function CustomForm() {
           Add new step
         </button>
       </div>
-      <div className="flex items-start">
+      <div className="flex items-start mt-8">
         <NewFormControlsNav />
       </div>
     </div>

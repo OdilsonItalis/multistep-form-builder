@@ -74,7 +74,7 @@ export default function CreateNewFormPage() {
                   radioChecked={values.buttonTheme === colors.purple}
                   onClickHandler={() => {
                     setFieldValue('buttonTheme', colors.purple);
-                    setTouched({ ...touched, ['buttonTheme']: true });
+                    setTouched({ ...touched, ['buttonTheme']: false });
                   }}
                   radioCicle
                   leftArrow
@@ -90,7 +90,7 @@ export default function CreateNewFormPage() {
                   radioChecked={values.buttonTheme === colors.black}
                   onClickHandler={() => {
                     setFieldValue('buttonTheme', colors.black);
-                    setTouched({ ...touched, ['buttonTheme']: true });
+                    setTouched({ ...touched, ['buttonTheme']: false });
                   }}
                   radioCicle
                   leftArrow
@@ -106,7 +106,7 @@ export default function CreateNewFormPage() {
                   radioChecked={values.buttonTheme === colors.pink}
                   onClickHandler={() => {
                     setFieldValue('buttonTheme', colors.pink);
-                    setTouched({ ...touched, ['buttonTheme']: true });
+                    setTouched({ ...touched, ['buttonTheme']: false });
                   }}
                   radioCicle
                   leftArrow
@@ -122,7 +122,7 @@ export default function CreateNewFormPage() {
                   radioChecked={values.buttonTheme === colors.green}
                   onClickHandler={() => {
                     setFieldValue('buttonTheme', colors.green);
-                    setTouched({ ...touched, ['buttonTheme']: true });
+                    setTouched({ ...touched, ['buttonTheme']: false });
                   }}
                   radioCicle
                   leftArrow
