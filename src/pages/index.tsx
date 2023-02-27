@@ -7,8 +7,10 @@ import FormLabel from '../components/FormLabel';
 import FormInput from '../components/FormInput';
 
 import { createNewFormSchema } from '../utils/formValidationSchemas';
+import useToastMessage from '../hooks/toastMessage';
 
 export default function CreateNewFormPage() {
+  const { showSuccess } = useToastMessage();
   const colors = {
     purple: '#cc66ff',
     black: '#000000',
@@ -26,6 +28,7 @@ export default function CreateNewFormPage() {
         }}
         validationSchema={createNewFormSchema}
         onSubmit={(values) => {
+          showSuccess(`New form ${values.formName} created successfully!`);
           Router.push({
             pathname: `/forms/${values.formName}`
           });
@@ -38,7 +41,8 @@ export default function CreateNewFormPage() {
           errors,
           touched,
           isSubmitting,
-          handleSubmit
+          handleSubmit,
+          setTouched
         }) => (
           <form className="flex flex-col w-[350px]" onSubmit={handleSubmit}>
             <Button type="submit" classes="self-end" disabled={isSubmitting}>
@@ -68,9 +72,10 @@ export default function CreateNewFormPage() {
                   classes="self-end w-full"
                   themeColor={colors.purple}
                   radioChecked={values.buttonTheme === colors.purple}
-                  onClickHandler={() =>
-                    setFieldValue('buttonTheme', colors.purple)
-                  }
+                  onClickHandler={() => {
+                    setFieldValue('buttonTheme', colors.purple);
+                    setTouched({ ...touched, ['buttonTheme']: true });
+                  }}
                   radioCicle
                   leftArrow
                 >
@@ -83,9 +88,10 @@ export default function CreateNewFormPage() {
                   classes="self-end w-full"
                   themeColor={colors.black}
                   radioChecked={values.buttonTheme === colors.black}
-                  onClickHandler={() =>
-                    setFieldValue('buttonTheme', colors.black)
-                  }
+                  onClickHandler={() => {
+                    setFieldValue('buttonTheme', colors.black);
+                    setTouched({ ...touched, ['buttonTheme']: true });
+                  }}
                   radioCicle
                   leftArrow
                 >
@@ -98,9 +104,10 @@ export default function CreateNewFormPage() {
                   classes="self-end w-full"
                   themeColor={colors.pink}
                   radioChecked={values.buttonTheme === colors.pink}
-                  onClickHandler={() =>
-                    setFieldValue('buttonTheme', colors.pink)
-                  }
+                  onClickHandler={() => {
+                    setFieldValue('buttonTheme', colors.pink);
+                    setTouched({ ...touched, ['buttonTheme']: true });
+                  }}
                   radioCicle
                   leftArrow
                 >
@@ -113,9 +120,10 @@ export default function CreateNewFormPage() {
                   classes="self-end w-full"
                   themeColor={colors.green}
                   radioChecked={values.buttonTheme === colors.green}
-                  onClickHandler={() =>
-                    setFieldValue('buttonTheme', colors.green)
-                  }
+                  onClickHandler={() => {
+                    setFieldValue('buttonTheme', colors.green);
+                    setTouched({ ...touched, ['buttonTheme']: true });
+                  }}
                   radioCicle
                   leftArrow
                 >
@@ -123,7 +131,7 @@ export default function CreateNewFormPage() {
                 </Button>
               </div>
             </div>
-            {errors.buttonTheme && (
+            {errors.buttonTheme && touched.buttonTheme && (
               <span className="text-red-500 font-medium text-[14px]">
                 {errors.buttonTheme}
               </span>
@@ -135,10 +143,10 @@ export default function CreateNewFormPage() {
               name="redirectUrl"
               placeholder="Form submit url"
               value={values.redirectUrl}
-              error={errors.redirectUrl && touched.buttonTheme}
+              error={errors.redirectUrl && touched.redirectUrl}
               onChange={handleChange}
             />
-            {errors.redirectUrl && touched.buttonTheme && (
+            {errors.redirectUrl && touched.redirectUrl && (
               <span className="text-red-500 font-medium text-[14px]">
                 {errors.redirectUrl}
               </span>

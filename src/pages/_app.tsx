@@ -2,6 +2,7 @@ import '../styles/main.css';
 import '../styles/chrome-bug.css';
 import { useEffect, useState } from 'react';
 import React from 'react';
+import { ToastProvider } from 'react-toast-notifications';
 
 import store from '../store/store';
 import { Provider } from 'react-redux';
@@ -20,12 +21,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     document.body.classList?.remove('loading');
   }, []);
 
-
   return (
     <Provider store={store}>
       <SessionContextProvider supabaseClient={supabaseClient}>
         <MyUserContextProvider>
-          <Component {...pageProps} />
+          <ToastProvider>
+            <Component {...pageProps} />
+          </ToastProvider>
         </MyUserContextProvider>
       </SessionContextProvider>
     </Provider>
