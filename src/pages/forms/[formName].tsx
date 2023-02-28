@@ -8,6 +8,7 @@ import NewFormControlsNav from '../../components/NewFormControlsNav';
 import Button from '../../components/FormMaterials/Button';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import CreateNewMaterialModal from '../../components/Modals/CreateNewMaterialModal';
+import ResultForm from '../../components/ResultForm';
 
 export default function CustomForm() {
   const { selectedForm } = useSelector((state: any) => state.formsReducer);
@@ -98,6 +99,7 @@ export default function CustomForm() {
               openCreateNewMaterialModal={() =>
                 setCreateNewMaterialModalOpen(true)
               }
+              selectedStep={selectedStep}
             />
 
             <div className="flex-1 flex flex-col justify-center items-center">
@@ -120,25 +122,7 @@ export default function CustomForm() {
                       alt="Mobile Resemble Top"
                     />
                   )}
-                  <form
-                    className={classNames(
-                      'p-2 flex flex-col w-full h-full overflow-y-auto items-center',
-                      {
-                        'text-white': formData.textColor
-                      }
-                    )}
-                  >
-                    <h4 className="font-medium text-[18px] my-3">
-                      {formData?.formName}
-                    </h4>
-                    <Button
-                      classes="self-end w-full mt-auto"
-                      themeColor={formData?.buttonTheme}
-                      leftArrow
-                    >
-                      {formData?.buttonText}
-                    </Button>
-                  </form>
+                  <ResultForm formData={formData} selectedForm={selectedStep} />
                 </div>
               </div>
             </div>
@@ -152,6 +136,7 @@ export default function CustomForm() {
         onSubmit={() => {
           setFormSteps(formSteps - 1);
           setIsStepDelConfirmationOpen(false);
+          setSelectedStep(1);
         }}
       />
 
@@ -159,7 +144,7 @@ export default function CustomForm() {
         isOpen={isRefreshModalOpen}
         closeModal={() => setIsRefreshModalOpen(false)}
         title="Are you sure you want to refresh form data?"
-        subTitle='Your changes may not be saved!'
+        subTitle="Your changes may not be saved!"
         onSubmit={() => {
           setFormSteps(1);
           setSelectedStep(1);
@@ -182,6 +167,9 @@ export default function CustomForm() {
         closeModal={() => {
           setCreateNewMaterialModalOpen(false);
         }}
+        setFormData={setFormData}
+        formData={formData}
+        selectedStep={selectedStep}
       />
 
       <button

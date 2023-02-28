@@ -7,16 +7,25 @@ interface ControlNavProps {
   setFormData: (formData: any) => void;
   resetNumber: number;
   openCreateNewMaterialModal: () => void;
+  selectedStep: number;
 }
 
 export default function NewFormControlsNav({
   formData,
   setFormData,
   resetNumber,
-  openCreateNewMaterialModal
+  openCreateNewMaterialModal,
+  selectedStep
 }: ControlNavProps) {
   const [selectedTheme, setSelectedTheme] = useState<number>(0);
   const [refreshNumber, setRefreshNumber] = useState<number>(0);
+  const [selectedMaterial, setSelectedMaterial] = useState<any>(
+    formData.steps[selectedStep - 1]?.materials[0]
+  );
+
+  const [stepFormData, setStepFormData] = useState<any>(
+    formData.steps[selectedStep - 1] || []
+  );
 
   const fileUploadRef = useRef<any>(null);
 
@@ -52,6 +61,10 @@ export default function NewFormControlsNav({
       setRefreshNumber(resetNumber);
     }
   }, [resetNumber]);
+
+  useEffect(() => {
+    setStepFormData(formData.steps[selectedStep - 1]);
+  }, [selectedStep, formData]);
   return (
     <div className="border-r border-solid border-gray-200 h-full">
       <p className="text-[16px] font-medium mb-4">Background Theme</p>
@@ -113,6 +126,18 @@ export default function NewFormControlsNav({
         </div>
       </div>
       <p className="text-[16px] font-medium mb-4 mt-4">Components</p>
+      {stepFormData?.materials.map((item: any, index: number) => (
+        <div
+          key={index}
+          onClick={() => setSelectedMaterial({ ...item, order: index })}
+          className={classNames("w-full py-1 px-2 flex items-center my-2 hover:bg-gray-100 cursor-default", {
+            'bg-gray-100': selectedMaterial?.order === index
+          })}
+        >
+          <img src={item.icon} alt="Material Icon" className="w-[40px]" />
+          <p className="font-medium ml-3 text-gray-800">{item.title}</p>
+        </div>
+      ))}
       <button
         className="ml-4 flex items-center text-blue-500 font-medium hover:text-blue-400 duration-[0.2s]"
         onClick={() => openCreateNewMaterialModal()}

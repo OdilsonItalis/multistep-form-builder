@@ -13,9 +13,9 @@ export type ButtonProps = {
 };
 
 export type InputProps = {
-  value: string;
+  value?: string;
   name?: string;
-  onChange: (e: any) => void;
+  onChange?: (e: any) => void;
   type?: string;
   placeholder?: string;
   className?: string;
