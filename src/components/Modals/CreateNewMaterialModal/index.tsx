@@ -43,9 +43,9 @@ export default function CreateNewMaterialModal({
   useEffect(() => {
     if (search !== '') {
       setMaterials(
-        formMaterials.filter((item) => {
-          return item.title.toLowerCase().indexOf(search.toLowerCase()) === -1;
-        })
+        formMaterials.filter(
+          (item) => item.title.toLowerCase().indexOf(search.toLowerCase()) > -1
+        )
       );
     } else {
       setMaterials(formMaterials);
