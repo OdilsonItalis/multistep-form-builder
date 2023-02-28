@@ -17,7 +17,7 @@ export default function Button({
   return (
     <button
       type={type || 'button'}
-      className={`rounded-md text-white py-2 px-4 font-medium relative flex items-center justify-center ${classes}`}
+      className={`rounded-md text-white py-2 px-4 font-medium relative flex items-center justify-center hover:opacity-80 duration-[0.2s] ${classes}`}
       onClick={() => {
         if (onClickHandler) {
           onClickHandler();

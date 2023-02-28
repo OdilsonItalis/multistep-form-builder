@@ -2,18 +2,26 @@ import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaTimes } from 'react-icons/fa';
 
 import NewFormControlsNav from '../../components/NewFormControlsNav';
 import Button from '../../components/FormMaterials/Button';
+import ConfirmationModal from '../../components/Modals/ConfirmationModal';
+import CreateNewMaterialModal from '../../components/Modals/CreateNewMaterialModal';
 
 export default function CustomForm() {
-  const { selectedForm } = useSelector((state) => state.formsReducer);
+  const { selectedForm } = useSelector((state: any) => state.formsReducer);
 
   const [formSteps, setFormSteps] = useState<number>(1);
   const [selectedStep, setSelectedStep] = useState<number>(1);
-  const [formData, setFormData] = useState();
-  console.log('==================>>>>', formData);
+  const [formData, setFormData] = useState<any>();
+  const [resetNumber, setResetNumber] = useState<number>(0);
+
+  const [isStepDelConfirmationOpen, setIsStepDelConfirmationOpen] =
+    useState(false);
+  const [isRefreshModalOpen, setIsRefreshModalOpen] = useState<boolean>(false);
+  const [createNewMaterialModalOpen, setCreateNewMaterialModalOpen] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (selectedForm.formName) {
@@ -33,15 +41,15 @@ export default function CustomForm() {
     }
   }, [selectedForm]);
   return (
-    <div className="py-6 px-8">
+    <div className="py-6 px-8 h-screen w-screen flex flex-col relative overflow-hidden">
       {formData && (
         <>
-          <div className="flex items-center">
+          <div className="flex items-center mb-8">
             {Array.from(Array(formSteps).keys()).map((item) => (
               <button
                 key={item}
                 className={classNames(
-                  'py-2 px-6 mr-2 font-medium text-[14px] border-2 border-solid border-gray-200 text-gray-700 rounded-md',
+                  'py-2 px-6 mr-2 font-medium text-[14px] border-2 border-solid border-gray-200 text-gray-700 rounded-md relative group',
                   {
                     'border-violet-600': selectedStep === item + 1
                   }
@@ -49,50 +57,146 @@ export default function CustomForm() {
                 onClick={() => setSelectedStep(item + 1)}
               >
                 Step {item + 1}
+                {formSteps > 1 && (
+                  <span
+                    className="p-[2px] duration-[0.1s] -mt-[5px] -mr-[5px] absolute top-0 right-0 text-[10px] rounded-full text-white bg-gray-600 hidden group-hover:flex"
+                    onClick={() => setIsStepDelConfirmationOpen(true)}
+                  >
+                    <FaTimes />
+                  </span>
+                )}
               </button>
             ))}
+
             <button
-              className="ml-4 flex items-center text-blue-500 font-medium"
+              className="ml-4 flex items-center text-blue-500 font-medium hover:text-blue-400 duration-[0.2s]"
               onClick={() => {
-                setFormSteps(formSteps + 1);
+                const newFormStep = formSteps + 1;
+                setFormSteps(newFormStep);
+                setFormData({
+                  ...formData,
+                  steps: [
+                    ...formData.steps,
+                    {
+                      step: newFormStep,
+                      materials: []
+                    }
+                  ]
+                });
               }}
             >
               <FaPlus className="mr-1" />
               Add new step
             </button>
           </div>
-          <div className="flex items-start mt-8">
-            <NewFormControlsNav formData={formData} setFormData={setFormData} />
+
+          <div className="flex items-start flex-1">
+            <NewFormControlsNav
+              resetNumber={resetNumber}
+              formData={formData}
+              setFormData={setFormData}
+              openCreateNewMaterialModal={() =>
+                setCreateNewMaterialModalOpen(true)
+              }
+            />
+
             <div className="flex-1 flex flex-col justify-center items-center">
               <p className="text-[14px] font-medium mb-4">Preview</p>
               <div
-                className="w-[400px] rounded-sm border border-gray-300 border-solid"
-                style={{ background: `url(${formData.background})` }}
+                className="w-[400px] h-[757px] bg-cover overflow-hidden relative flex items-center justify-center"
+                style={{
+                  background: "url('/images/mobile_resemble.png')",
+                  backgroundSize: 'cover'
+                }}
               >
-                <form
-                  className={classNames(
-                    'p-2 flex flex-col w-full h-full items-center',
-                    {
-                      'text-white': formData.textColor
-                    }
-                  )}
+                <div
+                  className="absolute top-0 pt-8 mr-[2px] w-[90%] mt-[17px] h-[92.5%] rounded-tl-[40px] rounded-tr-[40px] flex flex-col items-center"
+                  style={{ background: `url(${formData.background})` }}
                 >
-                  <h4 className="font-medium text-[18px] my-3">
-                    {formData?.formName}
-                  </h4>
-                  <Button
-                    classes="self-end w-full mt-auto"
-                    themeColor={formData?.buttonTheme}
-                    leftArrow
+                  {formData.background && formData.background !== '' && (
+                    <img
+                      src="/images/mobile_resemble_top.png"
+                      className="top-0 -mt-[34px] w-[58%]"
+                      alt="Mobile Resemble Top"
+                    />
+                  )}
+                  <form
+                    className={classNames(
+                      'p-2 flex flex-col w-full h-full overflow-y-auto items-center',
+                      {
+                        'text-white': formData.textColor
+                      }
+                    )}
                   >
-                    {formData?.buttonText}
-                  </Button>
-                </form>
+                    <h4 className="font-medium text-[18px] my-3">
+                      {formData?.formName}
+                    </h4>
+                    <Button
+                      classes="self-end w-full mt-auto"
+                      themeColor={formData?.buttonTheme}
+                      leftArrow
+                    >
+                      {formData?.buttonText}
+                    </Button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </>
       )}
+
+      <ConfirmationModal
+        isOpen={isStepDelConfirmationOpen}
+        closeModal={() => setIsStepDelConfirmationOpen(false)}
+        onSubmit={() => {
+          setFormSteps(formSteps - 1);
+          setIsStepDelConfirmationOpen(false);
+        }}
+      />
+
+      <ConfirmationModal
+        isOpen={isRefreshModalOpen}
+        closeModal={() => setIsRefreshModalOpen(false)}
+        title="Are you sure you want to refresh form data?"
+        subTitle='Your changes may not be saved!'
+        onSubmit={() => {
+          setFormSteps(1);
+          setSelectedStep(1);
+          setFormData({
+            ...selectedForm,
+            steps: Array.from(Array(formSteps).keys()).map((item) => {
+              return {
+                step: item,
+                materials: []
+              };
+            })
+          });
+          setResetNumber(resetNumber + 1);
+          setIsRefreshModalOpen(false);
+        }}
+      />
+
+      <CreateNewMaterialModal
+        isOpen={createNewMaterialModalOpen}
+        closeModal={() => {
+          setCreateNewMaterialModalOpen(false);
+        }}
+      />
+
+      <button
+        className="absolute bg-white bottom-[40px] right-[40px] z-100 w-[70px] hover:w-[150px] py-2 px-4 duration-[0.4s] group flex items-center hover:border border-solid border-gray-300 overflow-hidden rounded-md hover:shadow-md"
+        onClick={() => setIsRefreshModalOpen(true)}
+      >
+        <img
+          src="/images/icons/refresh.svg"
+          className="w-[38px]"
+          alt="Refresh Icon"
+        />
+        <p className="hidden whitespace-nowrap ml-2 font-medium text-[18px] group-hover:flex w-[0px] group-hover:w-[75px] duration-[0.6s] text-gray-600">
+          Reset All
+        </p>
+      </button>
     </div>
   );
 }
