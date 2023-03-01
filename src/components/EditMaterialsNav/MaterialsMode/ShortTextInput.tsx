@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface ShortTextProps {
+interface Props {
   materialData: any;
   setSelectedMaterialEdit: (material: any) => void;
 }
@@ -8,7 +8,7 @@ interface ShortTextProps {
 export default function ShortTextInput({
   materialData,
   setSelectedMaterialEdit
-}: ShortTextProps) {
+}: Props) {
   const onChangeEdits = (key: string, editValue: string) => {
     setSelectedMaterialEdit({ ...materialData, [key]: editValue });
   };

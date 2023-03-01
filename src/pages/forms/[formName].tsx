@@ -53,7 +53,7 @@ export default function CustomForm() {
     }
   }, [selectedForm]);
   return (
-    <div className="py-6 px-8 h-screen w-screen flex flex-col relative overflow-hidden">
+    <div className="py-6 px-8 h-screen w-screen flex flex-col relative overflow-hidden bg-gray-100">
       {formData && (
         <>
           <div className="flex items-center mb-8">
@@ -132,8 +132,12 @@ export default function CustomForm() {
                 }}
               >
                 <div
-                  className="absolute top-0 pt-8 mr-[2px] w-[90%] mt-[17px] h-[92.5%] rounded-tl-[40px] rounded-tr-[40px] flex flex-col items-center"
-                  style={{ background: `url(${formData.background})` }}
+                  className="absolute top-0 pt-8 mr-[2px] w-[90%] bg-coverImportant mt-[17px] h-[92.5%] rounded-tl-[40px] rounded-tr-[40px] flex flex-col items-center"
+                  style={{
+                    background: formData.background
+                      ? `url(${formData.background})`
+                      : 'white'
+                  }}
                 >
                   {formData.background && formData.background !== '' && (
                     <img
@@ -142,7 +146,11 @@ export default function CustomForm() {
                       alt="Mobile Resemble Top"
                     />
                   )}
-                  <ResultForm formData={formData} selectedForm={selectedStep} />
+                  <ResultForm
+                    formData={formData}
+                    selectedForm={selectedStep}
+                    setSelectedStep={setSelectedStep}
+                  />
                 </div>
               </div>
             </div>

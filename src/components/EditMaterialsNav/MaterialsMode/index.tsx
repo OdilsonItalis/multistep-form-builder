@@ -1,6 +1,8 @@
 import React from 'react';
 
 import ShortTextInput from './ShortTextInput';
+import LongTextInput from './LongTextInput';
+import Paragraph from './Paragraph';
 
 export default function MaterialsMode({
   material,
@@ -13,6 +15,20 @@ export default function MaterialsMode({
     case 'text_input':
       return (
         <ShortTextInput
+          materialData={material}
+          setSelectedMaterialEdit={setSelectedMaterialEdit}
+        />
+      );
+    case 'long_text':
+      return (
+        <LongTextInput
+          materialData={material}
+          setSelectedMaterialEdit={setSelectedMaterialEdit}
+        />
+      );
+    case 'paragraph':
+      return (
+        <Paragraph
           materialData={material}
           setSelectedMaterialEdit={setSelectedMaterialEdit}
         />

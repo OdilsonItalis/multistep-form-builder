@@ -25,7 +25,7 @@ export default function FormInput({
         type={type || 'text'}
         placeholder={placeholder}
         onChange={onChange}
-        className={`border border-solid text-gray-800 border-inherit rounded-md py-1 px-2 focus:outline-0 ${className} ${
+        className={`border h-[40px] border-solid text-gray-800 border-inherit rounded-md py-1 px-2 focus:outline-0 ${className} ${
           error && 'border-red-500'
         }`}
         {...props}

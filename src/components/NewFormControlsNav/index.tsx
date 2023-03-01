@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { FaCheckCircle, FaPlus, FaPlusCircle } from 'react-icons/fa';
+import {
+  FaCheckCircle,
+  FaPlus,
+  FaPlusCircle,
+  FaEllipsisV
+} from 'react-icons/fa';
 
 interface ControlNavProps {
   formData: any;
@@ -19,7 +24,7 @@ export default function NewFormControlsNav({
   openCreateNewMaterialModal,
   selectedStep,
   setSelectedMaterialEdit,
-  selectedMaterialEdit,
+  selectedMaterialEdit
 }: ControlNavProps) {
   const [selectedTheme, setSelectedTheme] = useState<number>(0);
   const [refreshNumber, setRefreshNumber] = useState<number>(0);
@@ -67,7 +72,7 @@ export default function NewFormControlsNav({
     setStepFormData(formData.steps[selectedStep - 1]);
   }, [selectedStep, formData]);
   return (
-    <div className="border-r border-solid border-gray-200 h-full">
+    <div className="border-r border-solid border-gray-200 h-full pr-8 flex flex-col">
       <p className="text-[16px] font-medium mb-4">Background Theme</p>
 
       {/* Custom image upload */}
@@ -127,25 +132,37 @@ export default function NewFormControlsNav({
         </div>
       </div>
       <p className="text-[16px] font-medium mb-4 mt-4">Components</p>
-      {stepFormData?.materials.map((item: any, index: number) => (
-        <div
-          key={index}
-          onClick={() => setSelectedMaterialEdit({ ...item, order: index })}
-          className={classNames("w-full py-1 px-2 flex items-center my-2 hover:bg-gray-100 cursor-default", {
-            'bg-gray-100': selectedMaterialEdit?.order === index
-          })}
+      <div className='flex-1 overflow-y-auto'>
+        {stepFormData?.materials.map((item: any, index: number) => (
+          <div
+            key={index}
+            className={classNames(
+              'group w-full bg-white py-1 px-2 h-[50px] flex items-center my-2 hover:bg-gray-100 cursor-default border border-solid border-gray-200 rounded-md my-2',
+              {
+                'bg-gray-50': selectedMaterialEdit?.order === index
+              }
+            )}
+          >
+            <img src={item.icon} alt="Material Icon" className="w-[20px]" />
+            <p
+              className="font-medium ml-3 text-gray-800 cursor-pointer flex-1"
+              onClick={() => setSelectedMaterialEdit({ ...item, order: index })}
+            >
+              {item.title}
+            </p>
+            <button className="hidden group-hover:flex ml-auto text-gray-600">
+              <FaEllipsisV />
+            </button>
+          </div>
+        ))}
+        <button
+          className="ml-4 flex items-center text-blue-500 font-medium hover:text-blue-400 duration-[0.2s]"
+          onClick={() => openCreateNewMaterialModal()}
         >
-          <img src={item.icon} alt="Material Icon" className="w-[40px]" />
-          <p className="font-medium ml-3 text-gray-800">{item.title}</p>
-        </div>
-      ))}
-      <button
-        className="ml-4 flex items-center text-blue-500 font-medium hover:text-blue-400 duration-[0.2s]"
-        onClick={() => openCreateNewMaterialModal()}
-      >
-        <FaPlus className="mr-1" />
-        Add new Component
-      </button>
+          <FaPlus className="mr-1" />
+          Add new Component
+        </button>
+      </div>
     </div>
   );
 }

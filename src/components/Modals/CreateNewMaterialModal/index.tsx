@@ -76,7 +76,7 @@ export default function CreateNewMaterialModal({
           </button>
         )}
       </div>
-      <div className="flex flex-col flex-wrap mt-4">
+      <div className="flex flex-wrap mt-4">
         {materials.map((item) => (
           <div
             key={item.component}
@@ -93,10 +93,12 @@ export default function CreateNewMaterialModal({
               });
               closeModal();
             }}
-            className="flex items-center w-[250px] rounded-md hover:bg-gray-200 cursor-default"
+            className="flex items-center w-[250px] rounded-md hover:bg-gray-100 cursor-default my-1 py-1.5 px-2"
           >
-            <img src={item.icon} className="w-[40px]" alt="Component Icon" />
-            <p className="text-[14px] font-medium text-gray-800">
+            <span className="rounded-sm w-[25px] h-[25px] flex items-center justify-center bg-gray-300">
+              <img src={item.icon} className="w-[17px]" alt="Component Icon" />
+            </span>
+            <p className="text-[14px] font-medium text-gray-800 ml-2">
               {item.title}
             </p>
           </div>

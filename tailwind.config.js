@@ -13,6 +13,9 @@ module.exports = {
       },
       animation: {
         slideTop: 'slideTop 0.4s ease-in-out',
+      },
+      backgroundSize: {
+        'coverImportant': 'cover !important'
       }
     }
   }

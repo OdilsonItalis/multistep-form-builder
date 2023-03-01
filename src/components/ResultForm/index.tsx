@@ -8,13 +8,21 @@ import getForm from './getForm';
 interface ResultFormProps {
   formData: any;
   selectedForm: number;
+  setSelectedStep: (step: number) => void;
 }
 
 export default function ResultForm({
   formData,
-  selectedForm
+  selectedForm,
+  setSelectedStep
 }: ResultFormProps) {
   const selectedFormMaterials = formData.steps[selectedForm - 1]?.materials;
+
+  const submitForm = () => {
+    if (selectedForm < formData.steps.length) {
+      setSelectedStep(selectedForm + 1);
+    }
+  };
   return (
     <form
       className={classNames(
@@ -26,13 +34,14 @@ export default function ResultForm({
     >
       <h4 className="font-medium text-[18px] my-3">{formData?.formName}</h4>
       {(selectedFormMaterials || []).map((item: any, index: number) => (
-        <div key={index} className="w-full">
+        <div key={index} className="w-full my-2">
           {getForm(item.component, item)}
         </div>
       ))}
       <Button
         classes="self-end w-full mt-auto"
         themeColor={formData?.buttonTheme}
+        onClickHandler={submitForm}
         leftArrow
       >
         {formData.steps.length === selectedForm ? formData?.buttonText : 'Next'}

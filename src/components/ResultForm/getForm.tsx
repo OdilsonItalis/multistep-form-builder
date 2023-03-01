@@ -1,6 +1,8 @@
 import React from 'react';
 
 import FormInput from '../FormMaterials/FormInput';
+import TextArea from '../FormMaterials/TextArea';
+import Paragraph from '../FormMaterials/Paragraph';
 
 export default function getForm(
   materialComponent: string,
@@ -17,6 +19,16 @@ export default function getForm(
           className={`w-full mt-1 ${componentProps.className || ''}`}
         />
       );
+    case 'long_text':
+      return (
+        <TextArea
+          name={componentProps.name || ''}
+          label={componentProps.label || ''}
+          placeholder={componentProps.placeholder || ''}
+        />
+      );
+    case 'paragraph':
+      return <Paragraph textValue={componentProps.textValue} />;
     default:
       return <FormInput className="w-full" />;
   }
