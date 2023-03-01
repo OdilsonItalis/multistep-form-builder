@@ -5,10 +5,10 @@ import classNames from 'classnames';
 import { FaPlus, FaTimes } from 'react-icons/fa';
 
 import NewFormControlsNav from '../../components/NewFormControlsNav';
-import Button from '../../components/FormMaterials/Button';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import CreateNewMaterialModal from '../../components/Modals/CreateNewMaterialModal';
 import ResultForm from '../../components/ResultForm';
+import EditMaterialNav from '../../components/EditMaterialsNav';
 
 export default function CustomForm() {
   const { selectedForm } = useSelector((state: any) => state.formsReducer);
@@ -23,6 +23,17 @@ export default function CustomForm() {
   const [isRefreshModalOpen, setIsRefreshModalOpen] = useState<boolean>(false);
   const [createNewMaterialModalOpen, setCreateNewMaterialModalOpen] =
     useState<boolean>(false);
+  const [selectedMaterialEdit, setSelectedMaterialEdit] = useState<any>();
+
+  useEffect(() => {
+    if (selectedMaterialEdit) {
+      let updatedSteps = [...formData.steps];
+      formData.steps[selectedStep - 1].materials[selectedMaterialEdit.order] =
+        selectedMaterialEdit;
+
+      setFormData({ ...formData, steps: updatedSteps });
+    }
+  }, [selectedMaterialEdit]);
 
   useEffect(() => {
     if (selectedForm.formName) {
@@ -100,9 +111,18 @@ export default function CustomForm() {
                 setCreateNewMaterialModalOpen(true)
               }
               selectedStep={selectedStep}
+              setSelectedMaterialEdit={setSelectedMaterialEdit}
+              selectedMaterialEdit={selectedMaterialEdit}
             />
 
-            <div className="flex-1 flex flex-col justify-center items-center">
+            <div
+              className={classNames(
+                'flex-1 flex flex-col justify-center items-center duration-[0.2s]',
+                {
+                  'mr-[350px]': !!selectedMaterialEdit
+                }
+              )}
+            >
               <p className="text-[14px] font-medium mb-4">Preview</p>
               <div
                 className="w-[400px] h-[757px] bg-cover overflow-hidden relative flex items-center justify-center"
@@ -126,6 +146,13 @@ export default function CustomForm() {
                 </div>
               </div>
             </div>
+            {formData.steps[selectedStep - 1].materials.length > 0 &&
+              selectedMaterialEdit && (
+                <EditMaterialNav
+                  setSelectedMaterialEdit={setSelectedMaterialEdit}
+                  selectedMaterialEdit={selectedMaterialEdit}
+                />
+              )}
           </div>
         </>
       )}
@@ -173,7 +200,7 @@ export default function CustomForm() {
       />
 
       <button
-        className="absolute bg-white bottom-[40px] right-[40px] z-100 w-[70px] hover:w-[150px] py-2 px-4 duration-[0.4s] group flex items-center hover:border border-solid border-gray-300 overflow-hidden rounded-md hover:shadow-md"
+        className="absolute bg-white bottom-[40px] right-[40px] z-50 w-[70px] hover:w-[150px] py-2 px-4 duration-[0.4s] group flex items-center hover:border border-solid border-gray-300 overflow-hidden rounded-md hover:shadow-md"
         onClick={() => setIsRefreshModalOpen(true)}
       >
         <img

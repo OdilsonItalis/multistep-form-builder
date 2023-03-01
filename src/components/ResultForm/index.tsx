@@ -27,7 +27,7 @@ export default function ResultForm({
       <h4 className="font-medium text-[18px] my-3">{formData?.formName}</h4>
       {(selectedFormMaterials || []).map((item: any, index: number) => (
         <div key={index} className="w-full">
-          {getForm(item.component)}
+          {getForm(item.component, item)}
         </div>
       ))}
       <Button

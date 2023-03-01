@@ -4,7 +4,7 @@ export const formMaterials = [
     title: 'Short Text',
     placeholder: '',
     type: '',
-    className: '',
+    label: '',
     name: '',
     icon: '/images/icons/materials/short_text_input.svg'
   }

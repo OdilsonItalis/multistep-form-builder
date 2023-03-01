@@ -21,6 +21,7 @@ export type InputProps = {
   className?: string;
   id?: string; 
   error?: boolean | "";
+  label?: string;
 }
 
 export type FromLabelProps = {

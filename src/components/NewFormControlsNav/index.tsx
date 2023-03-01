@@ -8,6 +8,8 @@ interface ControlNavProps {
   resetNumber: number;
   openCreateNewMaterialModal: () => void;
   selectedStep: number;
+  setSelectedMaterialEdit: (material: any) => void;
+  selectedMaterialEdit: any;
 }
 
 export default function NewFormControlsNav({
@@ -15,13 +17,12 @@ export default function NewFormControlsNav({
   setFormData,
   resetNumber,
   openCreateNewMaterialModal,
-  selectedStep
+  selectedStep,
+  setSelectedMaterialEdit,
+  selectedMaterialEdit,
 }: ControlNavProps) {
   const [selectedTheme, setSelectedTheme] = useState<number>(0);
   const [refreshNumber, setRefreshNumber] = useState<number>(0);
-  const [selectedMaterial, setSelectedMaterial] = useState<any>(
-    formData.steps[selectedStep - 1]?.materials[0]
-  );
 
   const [stepFormData, setStepFormData] = useState<any>(
     formData.steps[selectedStep - 1] || []
@@ -129,9 +130,9 @@ export default function NewFormControlsNav({
       {stepFormData?.materials.map((item: any, index: number) => (
         <div
           key={index}
-          onClick={() => setSelectedMaterial({ ...item, order: index })}
+          onClick={() => setSelectedMaterialEdit({ ...item, order: index })}
           className={classNames("w-full py-1 px-2 flex items-center my-2 hover:bg-gray-100 cursor-default", {
-            'bg-gray-100': selectedMaterial?.order === index
+            'bg-gray-100': selectedMaterialEdit?.order === index
           })}
         >
           <img src={item.icon} alt="Material Icon" className="w-[40px]" />
