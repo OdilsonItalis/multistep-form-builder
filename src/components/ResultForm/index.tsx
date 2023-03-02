@@ -26,7 +26,7 @@ export default function ResultForm({
   return (
     <form
       className={classNames(
-        'p-2 flex flex-col w-full h-full max-w-[350px] overflow-y-auto items-center',
+        'customScrollbar pt-6 p-2 flex flex-col w-full h-full max-w-[350px] overflow-y-auto items-center',
         {
           'text-white': formData.textColor
         }

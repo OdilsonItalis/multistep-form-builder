@@ -132,20 +132,18 @@ export default function CustomForm() {
                 }}
               >
                 <div
-                  className="absolute top-0 pt-8 mr-[2px] w-[90%] bg-coverImportant mt-[17px] h-[92.5%] rounded-tl-[40px] rounded-tr-[40px] flex flex-col items-center"
+                  className="absolute pt-4 top-0 mr-[2px] w-[90%] bg-coverImportant mt-[17px] h-[92.3%] rounded-tl-[40px] rounded-tr-[40px] flex flex-col items-center"
                   style={{
                     background: formData.background
                       ? `url(${formData.background})`
                       : 'white'
                   }}
                 >
-                  {formData.background && formData.background !== '' && (
-                    <img
-                      src="/images/mobile_resemble_top.png"
-                      className="top-0 -mt-[34px] w-[58%]"
-                      alt="Mobile Resemble Top"
-                    />
-                  )}
+                  <img
+                    src="/images/mobile_resemble_top.png"
+                    className="top-0 absolute w-[58%]"
+                    alt="Mobile Resemble Top"
+                  />
                   <ResultForm
                     formData={formData}
                     selectedForm={selectedStep}
