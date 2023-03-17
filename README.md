@@ -37,33 +37,29 @@ The initial build will fail due to missing Stripe environment variables. After c
 
 ## Configure Supabase Auth
 
-#### Setup redirect wildcards for deploy previews
-
-For auth redirects (magic links, OAuth providers) to work correctly in deploy previews, navigate to the auth settings (i.e. `https://app.supabase.com/project/:project-id/auth/url-configuration`) and add the following wildcard URL to "Redirect URLs": `https://**vercel.app/*/*`.
-
-You can read more about redirect wildcard patterns in the [docs](https://supabase.com/docs/guides/auth#redirect-urls-and-wildcards).
-
 #### [Optional] - Set up OAuth providers
 
-You can use third-party login providers like GitHub or Google. Refer to the [docs](https://supabase.io/docs/guides/auth#third-party-logins) to learn how to configure these. Once configured you can add them to the `provider` array of the `Auth` component on the [`signin.tsx`](./pages/signin.tsx) page.
+You can use third-party login providers like GitHub or Google. Refer to the [docs](https://supabase.io/docs/guides/auth#third-party-logins) to learn how to configure these.
 
 ## Configure Stripe
 
-To start developing your SaaS application, we'll need to configure Stripe to handle test payments. For the following steps, make sure you have the ["Test Mode" toggle](https://stripe.com/docs/testing) switched on.
+To start developing your SaaS application, we'll need to configure Stripe to handle test payments. For the following steps, make sure you have the "viewing test data" toggle switched to "on."
 
 ### Configure webhook
 
-We need to configure the webhook pictured in the architecture diagram above. This webhook is the piece that connects Stripe to your Vercel Serverless Functions.
+We need to configure the webhook pictured in the architecture diagram above. This webhook is the piece that connects Stripe to your Vercel serverless functions.
 
-1. Click the "Add Endpoint" button on the [test Endpoints page](https://dashboard.stripe.com/test/webhooks).
-1. Set the endpoint URL to `https://your-deployment-url.vercel.app/api/webhooks`.
-1. Click `Select events` under the `Select events to listen to` heading.
-1. Click `Select all events` in the `Select events to send` section.
-1. Copy `Signing secret` as we'll need that in the next step.
+First, click the "Add endpoint" button on the [test Endpoints page](https://dashboard.stripe.com/test/webhooks).
+
+Then, set the endpoint URL to `https://your-deployment-url.vercel.app/api/webhooks`.
+
+Next, click the `receive all events` link in the `Events to send` section.
+
+Finally, copy the `Signing secret` as we'll need that in the next step.
 
 ### Set environment variables
 
-To securely interact with Stripe, we need to add a few [Environment Variables](https://vercel.com/docs/concepts/projects/environment-variables) in the Vercel dashboard.
+To securely interact with Stripe, we need to add a few environment variables in the Vercel dashboard.
 
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
 - `STRIPE_SECRET_KEY`
@@ -71,11 +67,15 @@ To securely interact with Stripe, we need to add a few [Environment Variables](h
 
 You can find the first two keys on the [API keys tab](https://dashboard.stripe.com/test/apikeys) in Stripe. The `STRIPE_WEBHOOK_SECRET_LIVE` is the `Signing secret` copied in the previous webhook configuration step.
 
-### Redeploy
+### Redeploy and Test
 
 We need to redeploy the application so that the latest environment variables are present.
 
 Redeploy your application by going to the deployments tab, finding your deployment, and clicking "redeploy."
+
+Finally, click the `Send test webhook` button and send a `product.created` event. If everything works, you should see a test product in your Supabase database.
+
+After verifying that the configuration is working, delete the test products created via the webhook in Supabase.
 
 ### Create product and pricing information
 
