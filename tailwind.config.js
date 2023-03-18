@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundPosition: {
+        'centerImportant': 'center !important'
+      },
       backgroundSize: {
         'coverImportant': 'cover !important'
       },

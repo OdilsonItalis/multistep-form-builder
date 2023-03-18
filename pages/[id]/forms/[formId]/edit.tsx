@@ -274,7 +274,7 @@ const EditFormPage = () => {
                     }}
                   >
                     <div
-                      className="absolute pt-4 top-0 mr-[2px] w-[90%] bg-coverImportant mt-[17px] h-[92.3%] rounded-tl-[40px] rounded-tr-[40px] flex flex-col items-center"
+                      className="absolute pt-4 top-0 mr-[2px] w-[90%] bg-coverImportant bg-centerImportant mt-[17px] h-[92.3%] rounded-tl-[40px] rounded-tr-[40px] flex flex-col items-center"
                       style={{
                         background: formData.background
                           ? `url(${formData.background})`
