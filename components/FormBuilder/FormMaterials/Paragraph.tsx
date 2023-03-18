@@ -5,5 +5,5 @@ interface ParagraphProps {
 }
 
 export default function Paragraph({ textValue }: ParagraphProps) {
-  return <p>{textValue}</p>;
+  return <p className="whitespace-pre-line">{textValue}</p>;
 }

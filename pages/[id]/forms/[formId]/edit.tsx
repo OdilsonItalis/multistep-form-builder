@@ -24,7 +24,7 @@ import { supabase } from '@/utils/supabase-client';
 const EditFormPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { formId: id } = router.query;
+  const { id: userId, formId: id } = router.query;
   const isMobile = useDeviceDetect();
 
   const { data } = useGetFormById((id || '').toString());
@@ -81,8 +81,9 @@ const EditFormPage = () => {
   }, [selectedMaterialEdit]);
 
   const initializeEditForm = () => {
-    setFormData(data);
-    setFormSteps(data?.form_config?.length);
+    const dataCopy = { ...data };
+    setFormData({ ...dataCopy });
+    setFormSteps(dataCopy?.form_config?.length);
   };
 
   useEffect(() => {
@@ -139,22 +140,19 @@ const EditFormPage = () => {
         }
       );
     }
-
-    if (newThemeBackgrounds) {
-      const { error } = await supabase
-        .from('forms')
-        .update({ ...formData, form_theme_backgrounds: newThemeBackgrounds })
-        .eq('id', id)
-        .single();
-      if (error) {
-        toast.dismiss();
-        toast.error(error.message);
-        return;
-      } else {
-        toast.success('Successfully updated the form');
-        toggleSaveChangesConfirmationModal();
-        router.push(`/forms`);
-      }
+    const { error } = await supabase
+      .from('forms')
+      .update({ ...formData, form_theme_backgrounds: newThemeBackgrounds })
+      .eq('id', id)
+      .single();
+    if (error) {
+      toast.dismiss();
+      toast.error(error.message);
+      return;
+    } else {
+      toast.success('Successfully updated the form');
+      toggleSaveChangesConfirmationModal();
+      router.push(`/${userId as string}/forms`);
     }
   };
   return (
@@ -165,7 +163,8 @@ const EditFormPage = () => {
           formData?.background && mobilePreviewOpen && isMobile
             ? `url(${formData.background})`
             : 'url(/formBuilderBackground.jpg)',
-        backgroundSize: 'cover'
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
       }}
     >
       {formData &&
@@ -279,7 +278,8 @@ const EditFormPage = () => {
                       style={{
                         background: formData.background
                           ? `url(${formData.background})`
-                          : 'white'
+                          : 'white',
+                        backgroundPosition: 'center'
                       }}
                     >
                       <img
@@ -330,6 +330,7 @@ const EditFormPage = () => {
             initializeEditForm();
             setResetNumber(resetNumber + 1);
             toggleRefreshModal();
+            setFormData({ ...data });
           }}
         />
       )}

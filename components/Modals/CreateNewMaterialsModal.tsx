@@ -90,15 +90,15 @@ export default function CreateNewMaterialsModal({
               <div
                 key={item.component}
                 onClick={() => {
-                  let form_config = formData.form_config;
+                  let formConfig = [...formData.form_config];
                   const stepIndex = selectedStep - 1;
-                  form_config[stepIndex] = {
-                    ...form_config[stepIndex],
-                    materials: [...form_config[stepIndex].materials, item]
+                  formConfig[stepIndex] = {
+                    ...formConfig[stepIndex],
+                    materials: [...formConfig[stepIndex].materials, item]
                   };
                   setFormData({
                     ...formData,
-                    form_config
+                    form_config: formConfig
                   });
                   closeModal();
                 }}
