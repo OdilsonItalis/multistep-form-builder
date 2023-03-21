@@ -33,6 +33,8 @@ export default function MaterialsMode({
           setSelectedMaterialEdit={setSelectedMaterialEdit}
         />
       );
+    case 'custom_profile':
+      return <p>This component is not allowed to edit</p>;
     default:
       return (
         <ShortTextInput

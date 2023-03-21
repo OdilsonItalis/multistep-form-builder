@@ -61,7 +61,7 @@ export default function CreateNewMaterialsModal({
             y: '100%',
             transition: { duration: 0.3, ease: [0.36, 0.66, 0.04, 1] }
           }}
-          className="z-0 flex py-6 flex-col w-full bg-white rounded-lg shadow-xl px-6 max-w-2xl mx-auto relative"
+          className="z-0 flex py-6 flex-col w-full h-full md:h-auto bg-white rounded-lg shadow-xl px-6 max-w-2xl mx-auto relative"
         >
           <FaTimes onClick={closeModal} className="absolute top-[15px] right-[15px] text-gray-400 cursor-pointer" />
           <h4 className="text-[24px] font-medium text-center">

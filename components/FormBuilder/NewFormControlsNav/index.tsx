@@ -110,7 +110,7 @@ export default function NewFormControlsNav({
     <div className="border-0 md:border-r border-solid border-gray-200 w-full md:w-auto h-full pr-0 md:pr-8 flex flex-col">
       <p className="text-[16px] font-medium mb-1 md:mb-4">Background Theme</p>
 
-      <div className="flex items-center overflow-x-auto w-full max-w-[250px] py-3">
+      <div className="flex items-center overflow-x-auto w-full md:max-w-[250px] py-3">
         {formData.form_theme_backgrounds.map((item, index: number) => (
           <div key={index} className="flex flex-col items-center mr-4">
             <div

@@ -46,10 +46,6 @@ export default function FormMaterialsList({
     if (isDragging) return { color: '#00bfff' };
   };
 
-  const getListStyle = (isDraggingOver: boolean) => ({
-    width: 250
-  });
-
   const onDragEnd = (result: any) => {
     if (!result.destination) {
       return;
@@ -64,7 +60,7 @@ export default function FormMaterialsList({
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}
+              className="w-full md:w-[250px]"
             >
               {formMaterials.map((item: any, index: number) => (
                 <Draggable

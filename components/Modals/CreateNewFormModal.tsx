@@ -65,7 +65,10 @@ export default function CreateNewFormModal({ createNewForm }: ModalProps) {
           }}
           className="z-0 flex pt-6 flex-col w-full bg-white rounded-lg shadow-xl px-6 max-w-2xl mx-auto relative"
         >
-          <FaTimes className="absolute top-[15px] right-[15px] text-gray-400 cursor-pointer" />
+          <FaTimes
+            onClick={handleClose}
+            className="absolute top-[15px] right-[15px] text-gray-400 cursor-pointer"
+          />
           <Formik
             initialValues={{
               formName: '',
