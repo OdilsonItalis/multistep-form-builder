@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-hot-toast';
 import { motion } from 'framer-motion';
@@ -12,6 +12,7 @@ import { changeCreateNewFormModalStatus } from '@/utils/features/modalStateSlice
 import { useAppDispatch, useAppSelector } from '@/utils/hooks/rtkhooks';
 import { useUser } from '@/utils/useUser';
 import { supabase } from '@/utils/supabase-client';
+import { useGetUserForms } from '@/utils/hooks/useForms';
 
 interface FormData {
   formName: string;
@@ -28,29 +29,7 @@ const FormsPage = () => {
     (state) => state.modalState.createNewFormModalOpen
   );
 
-  const [formsData, setFormsData] = useState<any[]>([]);
-  const [isLoadingForms, setIsLoadingForms] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (user?.id) {
-      setIsLoadingForms(true);
-      (async () => {
-        const { data, error, count } = await supabase
-          .from('forms')
-          .select(`*`, { count: 'exact' })
-          .eq('user_id', user.id);
-        if (error) {
-          setIsLoadingForms(false);
-          throw new Error(`${error.message}: ${error.details}`);
-        }
-        if (count === 0) {
-          return null;
-        }
-        setIsLoadingForms(false);
-        setFormsData(data);
-      })();
-    }
-  }, [user?.id]);
+  const { data, isLoading, refetch } = useGetUserForms(user?.id);
 
   const createNewForm = async (formData: FormData) => {
     const formConfig = Array.from(Array(1).keys()).map((item) => {
@@ -95,6 +74,8 @@ const FormsPage = () => {
       }
       if (data) {
         toast.success('Successfully created new form');
+        refetch();
+        dispatch(changeCreateNewFormModalStatus(false));
         router.push(`/${user?.id}/forms/${data.id}/edit`);
       }
     }
@@ -114,17 +95,17 @@ const FormsPage = () => {
         </Button>
 
         <div className="mt-4 border-t border-solid border-gray-200 w-full flex-1 overflow-y-auto py-3">
-          {isLoadingForms && (
+          {isLoading && (
             <div className="w-full h-full flex items-center justify-center">
               <LoaderComponent />
             </div>
           )}
-          {!isLoadingForms && (
+          {!isLoading && (
             <>
               <div className="flex w-full flex-wrap">
-                {formsData &&
-                  formsData.length > 0 &&
-                  formsData.map((item) => (
+                {data &&
+                  data.length > 0 &&
+                  data.map((item) => (
                     <motion.div
                       key={item.id}
                       whileHover={{ scale: 1.02 }}
@@ -144,7 +125,7 @@ const FormsPage = () => {
                     </motion.div>
                   ))}
               </div>
-              {(!formsData || formsData.length === 0) && (
+              {(!data || data.length === 0) && (
                 <div className="flex-1 flex items-center justify-center h-full">
                   <p className="font-medium text-[14px] text-gray-700">
                     No data to show yet.{' '}

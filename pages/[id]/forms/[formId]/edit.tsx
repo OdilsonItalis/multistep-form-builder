@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import { FaPlus, FaTimes } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
+import { v4 as uuidv4 } from 'uuid';
 
 import NewFormControlsNav from '@/components/FormBuilder/NewFormControlsNav';
 import CreateNewMaterialModal from '@/components/Modals/CreateNewMaterialsModal';
@@ -12,6 +13,7 @@ import ConfirmationModal from '@/components/Modals/ConfirmationModal';
 import Loader from '@/components/Loader';
 
 import useDeviceDetect from '@/utils/hooks/useDeviceDetect';
+import { useGetFormById } from '@/utils/hooks/useForms';
 import {
   changeStepDelConfirmationModalStatus,
   changeRefreshModalStatus,
@@ -26,12 +28,12 @@ const EditFormPage = () => {
   const router = useRouter();
   const { id: userId, formId: id } = router.query;
   const isMobile = useDeviceDetect();
+  const { data, isLoading, refetch } = useGetFormById((id || '').toString());
 
   const [formSteps, setFormSteps] = useState<number>(1);
   const [selectedStep, setSelectedStep] = useState<number>(1);
   const [formData, setFormData] = useState<any>(null);
   const [resetNumber, setResetNumber] = useState<number>(0);
-  const [isLoadingFormData, setIsLoadingFormData] = useState<boolean>(false);
 
   const [selectedMaterialEdit, setSelectedMaterialEdit] = useState<any>();
   const [selectedStepDelete, setSelectedStepDelete] = useState<number>(0);
@@ -79,27 +81,17 @@ const EditFormPage = () => {
     }
   }, [selectedMaterialEdit]);
 
-  const initializeForm = async () => {
-    if (id) {
-      setIsLoadingFormData(true);
-      const { data, error } = await supabase
-        .from('forms')
-        .select(`*`)
-        .eq('id', id)
-        .single();
-      if (error) {
-        setIsLoadingFormData(false);
-        throw new Error(`${error.message}: ${error.details}`);
-      }
-      setIsLoadingFormData(false);
-      setFormData({ ...data });
-      setFormSteps(data?.form_config?.length);
-    }
+  const initializeEditForm = () => {
+    const dataCopy = { ...data };
+    setFormData({ ...dataCopy });
+    setFormSteps(dataCopy?.form_config?.length);
   };
 
   useEffect(() => {
-    initializeForm();
-  }, [id]);
+    if (data?.form_name && !formData) {
+      initializeEditForm();
+    }
+  }, [data]);
 
   const uploadImageToStorage = async (file: File | Blob, fileName: string) => {
     const { data, error } = await supabase.storage
@@ -137,7 +129,10 @@ const EditFormPage = () => {
         async (item: any) => {
           if (!item.saved) {
             const file = dataURLtoFile(item.url, item.name);
-            const urlPath = await uploadImageToStorage(file, item.name);
+            const urlPath = await uploadImageToStorage(
+              file,
+              `${uuidv4()}-${item.name}`
+            );
 
             return { ...item, url: urlPath, saved: true };
           } else return item;
@@ -161,10 +156,11 @@ const EditFormPage = () => {
     } else {
       toast.success('Successfully updated the form');
       toggleSaveChangesConfirmationModal();
+      refetch();
       router.push(`/${userId as string}/forms`);
     }
   };
-  return isLoadingFormData ? (
+  return isLoading ? (
     <div className="h-screen w-screen flex justify-center items-center">
       <Loader />
     </div>
@@ -291,8 +287,7 @@ const EditFormPage = () => {
                       style={{
                         background: formData.background
                           ? `url(${formData.background})`
-                          : 'white',
-                        backgroundPosition: 'center'
+                          : 'white'
                       }}
                     >
                       <img
@@ -342,7 +337,7 @@ const EditFormPage = () => {
             setSelectedStep(1);
             setResetNumber(resetNumber + 1);
             toggleRefreshModal();
-            initializeForm();
+            initializeEditForm();
           }}
         />
       )}

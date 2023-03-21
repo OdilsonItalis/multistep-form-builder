@@ -17,15 +17,14 @@ const getUserForms = async (userId: string | undefined) => {
 
 export function useGetUserForms(userId: string | undefined) {
   return useQuery({
-    queryKey: ['forms', userId],
+    queryKey: ['forms'],
     queryFn: () => getUserForms(userId),
-    enabled: !!userId,
     refetchOnMount: false, // when user invalidates, we don't want to refetch
     refetchOnWindowFocus: false // when user comes back to the app, we don't want to refetch
   });
 }
 
-const getFormById = async (formId: string) => {
+export const getFormById = async (formId: string) => {
   const { data, error } = await supabase
     .from('forms')
     .select(`*`)
@@ -39,9 +38,8 @@ const getFormById = async (formId: string) => {
 
 export function useGetFormById(formId: string) {
   return useQuery({
-    queryKey: ['forms', formId],
+    queryKey: ['form', formId],
     queryFn: () => getFormById(formId),
-    enabled: !!formId,
     refetchOnMount: false, // when user invalidates, we don't want to refetch
     refetchOnWindowFocus: false // when user comes back to the app, we don't want to refetch
   });
